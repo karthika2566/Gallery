@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Category Infinite Gallery with Filter</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+:root {
+  --bg-dark:#0f172a; --text-dark:#e5e7eb; --card-dark:#111827;
+  --bg-light:#f8fafc; --text-light:#0f172a; --card-light:#ffffff;
+  --accent:#38bdf8;
+}
+body {background:var(--bg-dark); color:var(--text-dark); font-family:system-ui,sans-serif; transition:0.4s;}
+body.light {background:var(--bg-light); color:var(--text-light);}
+h1{text-align:center;margin:25px 0;color:var(--accent);}
+.category-title {text-align:center; font-size:1.5rem; font-weight:600; margin:15px 0; color:var(--accent);}
+
+/* Theme toggle button */
+.toggle-theme{position:fixed;top:15px;right:15px;z-index:1000;cursor:pointer;background:none;border:none;font-size:1.4rem;color:currentColor;}
+
+/* Category Tabs */
+.category-tabs {text-align:center;margin-bottom:25px;}
+.category-tabs button{
+  margin:0 6px; padding:6px 18px; border-radius:30px; border:2px solid var(--accent);
+  background:transparent; color:inherit; position:relative; overflow:hidden; transition:0.3s; font-weight:500;
+}
+.category-tabs button::before{
+  content:""; position:absolute; width:100%; height:100%; left:0; top:0; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:0.3s; z-index:0; opacity:0.2;
+}
+.category-tabs button:hover::before, .category-tabs button.active::before{ transform:scaleX(1);}
+.category-tabs button span{position:relative; z-index:1;}
+
+/* Slider */
+.slider{overflow:hidden;margin-bottom:30px;cursor:grab; position:relative;}
+.track{display:flex;gap:16px; user-select:none;}
+.track img{width:240px;height:160px;object-fit:cover;border-radius:14px;background:var(--card-dark);box-shadow:0 10px 25px rgba(0,0,0,0.35);transition:transform 0.35s ease, filter 0.35s ease;}
+body.light .track img{background:var(--card-light);}
+.track img:hover{transform:translateY(-8px) scale(1.04);filter:brightness(1.1);}
+.caption{text-align:center;margin-top:6px;font-size:0.9rem;color:inherit;}
+
+/* Infinite animation directions */
+.track.right{animation:slideRight 20s linear infinite;}
+.track.left{animation:slideLeft 20s linear infinite;}
+.track.paused{animation-play-state:paused !important;}
+@keyframes slideRight{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes slideLeft{0%{transform:translateX(-50%);}100%{transform:translateX(0);}}
+</style>
+</head>
+<body>
+
+<button class="toggle-theme" onclick="toggleTheme()">🌙 / ☀️</button>
+<div class="container">
+<h1>Seamless Category Infinite Gallery</h1>
+
+<!-- Category Tabs -->
+<div class="category-tabs">
+<button class="active" onclick="filterCategory('all')"><span>All</span></button>
+<button onclick="filterCategory('friends')"><span>Friends</span></button>
+<button onclick="filterCategory('family')"><span>Family</span></button>
+<button onclick="filterCategory('nature')"><span>Nature</span></button>
+<button onclick="filterCategory('animals')"><span>Animals</span></button>
+</div>
+
+<!-- Friends -->
+<div class="category-title" data-group="friends">Friends</div>
+<div class="slider" data-group="friends"><div class="track right">
+  <div><img src="fr1.jpeg" alt="Best Buddies"><div class="caption">Best Buddies</div></div>
+  <div><img src="frd2.jpeg" alt="Hangout Fun"><div class="caption">Hangout Fun</div></div>
+  <div><img src="frd3.jpeg" alt="Road Trip"><div class="caption">Road Trip</div></div>
+  <div><img src="frd4.jpeg" alt="Best Buddies"><div class="caption">Best Buddies</div></div>
+  <div><img src="frd5.jpeg" alt="Hangout Fun"><div class="caption">Hangout Fun</div></div>
+  <div><img src="frd3.jpeg" alt="Road Trip"><div class="caption">Road Trip</div></div>
+  <div><img src="fr1.jpeg" alt="Best Buddies"><div class="caption">Best Buddies</div></div>
+</div></div>
+
+<!-- Family -->
+<div class="category-title" data-group="family">Family</div>
+<div class="slider" data-group="family"><div class="track left">
+  <div><img src="fam1.jpeg" alt="Together Forever"><div class="caption">Together Forever</div></div>
+  <div><img src="fam2.jpeg" alt="Holiday Time"><div class="caption">Holiday Time</div></div>
+  <div><img src="fam3.jpeg" alt="Birthday Party"><div class="caption">Birthday Party</div></div>
+  <div><img src="fam4.jpeg" alt="Together Forever"><div class="caption">Together Forever</div></div>
+  <div><img src="fam5.jpeg" alt="Holiday Time"><div class="caption">Holiday Time</div></div>
+  <div><img src="fam3.jpeg" alt="Birthday Party"><div class="caption">Birthday Party</div></div>
+  <div><img src="fam1.jpeg" alt="Together Forever"><div class="caption">Together Forever</div></div>
+</div></div>
+
+<!-- Nature -->
+<div class="category-title" data-group="nature">Nature</div>
+<div class="slider" data-group="nature"><div class="track right">
+  <div><img src="nat1.jpeg" alt="Sunset"><div class="caption">Sunset</div></div>
+  <div><img src="nat2.jpeg" alt="Forest Walk"><div class="caption">Forest Walk</div></div>
+  <div><img src="nat3.jpeg" alt="Hilltop"><div class="caption">Hilltop</div></div>
+  <div><img src="nat4.jpeg" alt="Sunset"><div class="caption">Sunset</div></div>
+  <div><img src="nat2.jpeg" alt="Forest Walk"><div class="caption">Forest Walk</div></div>
+  <div><img src="nat3.jpeg" alt="Hilltop"><div class="caption">Hilltop</div></div>
+  <div><img src="nat1.jpeg" alt="Sunset"><div class="caption">Sunset</div></div>
+</div></div>
+
+<!-- Animals -->
+<div class="category-title" data-group="animals">Animals</div>
+<div class="slider" data-group="animals"><div class="track left">
+  <div><img src="pet1.jpeg" alt="Lion Pride"><div class="caption">Rabiee</div></div>
+  <div><img src="pet2.jpeg" alt="Cute Puppy"><div class="caption">Cutie</div></div>
+  <div><img src="pet3.jpeg" alt="Parrot Flight"><div class="caption">Puppy</div></div>
+  <div><img src="pet4.jpeg" alt="Lion Pride"><div class="caption">Rabiee</div></div>
+  <div><img src="pet2.jpeg" alt="Cute Puppy"><div class="caption">Cutie</div></div>
+  <div><img src="pet3.jpeg" alt="Parrot Flight"><div class="caption">Puppy</div></div>
+  <div><img src="pet1.jpeg" alt="Lion Pride"><div class="caption">Rabiee</div></div>
+</div></div>
+
+<!-- Lightbox -->
+<div class="modal fade" id="lightbox" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content bg-dark">
+      <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+        <img id="lightboxImg" class="img-fluid rounded mb-2">
+        <p id="captionModal" class="text-light"></p>
+      </div>
+      <button class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleTheme(){document.body.classList.toggle('light');}
+
+// Category filter
+function filterCategory(cat){
+  const titles=document.querySelectorAll('.category-title');
+  const sliders=document.querySelectorAll('.slider');
+  document.querySelectorAll('.category-tabs button').forEach(btn=>btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  titles.forEach(title=>{
+    title.style.display=(cat==='all'||title.dataset.group===cat)?'block':'none';
+  });
+  sliders.forEach(slider=>{
+    slider.style.display=(cat==='all'||slider.dataset.group===cat)?'block':'none';
+  });
+}
+
+// Draggable sliders
+document.querySelectorAll('.slider').forEach(slider=>{
+  const track=slider.querySelector('.track');
+  let isDown=false,startX,scrollLeft;
+  slider.addEventListener('mousedown',e=>{isDown=true;track.classList.add('paused'); startX=e.pageX-slider.offsetLeft; scrollLeft=slider.scrollLeft;});
+  slider.addEventListener('mouseleave',()=>{isDown=false; track.classList.remove('paused');});
+  slider.addEventListener('mouseup',()=>{isDown=false; track.classList.remove('paused');});
+  slider.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();slider.scrollLeft=scrollLeft-(e.pageX-startX)*2;});
+  // touch
+  slider.addEventListener('touchstart',e=>{isDown=true; startX=e.touches[0].pageX-slider.offsetLeft; scrollLeft=slider.scrollLeft;});
+  slider.addEventListener('touchend',()=>{isDown=false; track.classList.remove('paused');});
+  slider.addEventListener('touchmove',e=>{if(!isDown)return;slider.scrollLeft=scrollLeft-(e.touches[0].pageX-startX)*2;});
+});
+
+// Lightbox
+const allImages=document.querySelectorAll('.track img'); let lightboxIndex=0;
+allImages.forEach((img,idx)=>{img.onclick=()=>{lightboxIndex=idx;openLightbox();};});
+function openLightbox(){
+  const modal=new bootstrap.Modal(document.getElementById('lightbox'));
+  document.getElementById('lightboxImg').src=allImages[lightboxIndex].src;
+  document.getElementById('captionModal').textContent=allImages[lightboxIndex].alt;
+  modal.show();
+  document.querySelectorAll('.track').forEach(t=>t.classList.add('paused'));
+  document.getElementById('lightbox').addEventListener('hidden.bs.modal',()=>{document.querySelectorAll('.track').forEach(t=>t.classList.remove('paused'));},{once:true});
+}
+document.addEventListener('keydown',e=>{
+  const modalEl=document.getElementById('lightbox');
+  if(!modalEl.classList.contains('show'))return;
+  if(e.key==='ArrowRight'){lightboxIndex=(lightboxIndex+1)%allImages.length;}
+  if(e.key==='ArrowLeft'){lightboxIndex=(lightboxIndex-1+allImages.length)%allImages.length;}
+  if(e.key==='Escape')bootstrap.Modal.getInstance(modalEl).hide();
+  document.getElementById('lightboxImg').src=allImages[lightboxIndex].src;
+  document.getElementById('captionModal').textContent=allImages[lightboxIndex].alt;
+});
+</script>
+</body>
+</html>
